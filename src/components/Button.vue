@@ -18,7 +18,7 @@ export default {
 </script>
 <style scoped>
 .button {
-  background-color: rgb(47, 219, 32); /* Green */
+  background-color: rgb(38, 171, 26); /* Green */
   margin: 0px;
   border: none;
   color: white;
