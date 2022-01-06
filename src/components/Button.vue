@@ -4,17 +4,6 @@
 
 <script>
 
-export default {
-    name: "Button",
-    props:{
-        text: String,
-    },
-    methods: {
-        onClick(){
-            alert("click");
-        },
-    }
-}
 </script>
 <style scoped>
 .button {
