@@ -65,7 +65,7 @@ export default {
         date: currentDateWithFormat,
       });
     },
-    
+
     onDelete: function onDelete(id) {
       this.items.splice(id, 1);
     },
@@ -114,4 +114,3 @@ body {
   border-left-color: green;
 }
 </style>
-
