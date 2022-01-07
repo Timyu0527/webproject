@@ -64,9 +64,8 @@ export default {
         shop: data,
         date: currentDateWithFormat,
       });
-      console.log(this.items);
-
     },
+    
     onDelete: function onDelete(id) {
       this.items.splice(id, 1);
     },
