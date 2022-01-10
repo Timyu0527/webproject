@@ -12,16 +12,7 @@ import { firebaseConfig } from "./firebase.js"
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig)
-// const analytics = getAnalytics(firebaseApp)
-// export const db = .firestroe()
-// db.collection('shop').get().then(r =>{
-//     r.docs.map(doc => {
-//         console.log(doc.data());
-//     });
-// });
-// db.collection
-const db = getFirestore(firebaseApp);
-// console.log(db.collection('shop'));
+export const db = getFirestore(firebaseApp);
 async function getCities(db) {
   const citiesCol = collection(db, 'shopCart');
   const citySnapshot = await getDocs(citiesCol);
@@ -29,5 +20,5 @@ async function getCities(db) {
   return cityList;
 }
 console.log(getCities(db))
-// const analytics = getAnalytics(app);
+
 createApp(App).mount('#app')

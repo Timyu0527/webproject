@@ -14,18 +14,21 @@
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
           <label class = "checkContainer"> 
-            <b>{{ item.shop }}</b>
+            <b>{{ item.shop_data }}</b>
             <input type = "checkbox" checked = "checked"  />
             <span class="checkmark"></span>
           </label>
-        <p>商品：{{ item.goods }}</p>
-        <p>數量：{{ item.count }}</p>
+        <p>商品：{{ item.goods_data }}</p>
+        <p>數量：{{ item.count_data }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { db } from './main.js'
+// import { collection } from 'firebase/firestore/lite';
+import { doc, getDoc, updateDoc } from 'firebase/firestore/lite';
 export default {
   name: "App",
   data() {
@@ -35,6 +38,13 @@ export default {
       goods_data: "",
       count_data: "1",
     };
+  },
+  mounted(){
+    getDoc(doc(db, 'shopCart', 'item')).then((data) => {
+      this.items = data.data().all_goods;
+      console.log(data.data().all_goods);
+      console.log(this.items);
+    });
   },
   methods: {
     add: function add(data) {
@@ -58,10 +68,13 @@ export default {
       // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
       this.items.push({
         id: Date.now(),
-        shop: data.shop_data,
+        shop_data: data.shop_data,
         // goods: currentDateWithFormat,
-        goods: data.goods_data,
-        count: data.count_data,
+        goods_data: data.goods_data,
+        count_data: data.count_data,
+      });
+      updateDoc(doc(db, 'shopCart', 'item'),{
+        all_goods: this.items
       });
       this.goods_data = "";
       this.shop_data = "";
