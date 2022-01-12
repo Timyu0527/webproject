@@ -1,7 +1,9 @@
 <template>
   <div id="nav">
     <router-link to="/">首頁</router-link> |
-    <router-link to="/body">你的購物清單</router-link>
+    <router-link to="/Body">你的購物清單</router-link> |
+    <router-link to="/Login">登入</router-link> | 
+    <router-link to="/Register">註冊</router-link>
   </div>
   <router-view/>
 </template>

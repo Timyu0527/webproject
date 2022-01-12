@@ -8,11 +8,11 @@
         <input name = "password" class = "area" type = "password" v-model="password"/>
         </label>
         <br/> 
-        <input type = "submit" class = "submit" value = "登入" @click="getData(email, password)"/>
+        <input type = "submit" class = "submit" value = "註冊" @click="getData(email, password)"/>
     </form>
 </template>
 <script>
-import { login } from '../main.js';
+import { register } from '../main.js';
 export default {
     data() {
         return {
@@ -22,8 +22,11 @@ export default {
     },
     methods:{
         getData: function getData(email, password){
-            console.log(login(email, password));
-            this.$router.push('/Body');
+
+            console.log(register(email, password));
+            this.$router.push('/Login');
+            // window.location.href = ""
+
             // console.log(email, password);
         }
     }

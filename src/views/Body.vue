@@ -2,24 +2,23 @@
   <div class="container">
     <h1>
       購物車
-      <!-- <Button @click="add(shop_data)" /> -->
       <button @click="add({shop_data, goods_data, count_data})" class = "button">新增</button>
     </h1>
     <div class="dataIn">
-      <label class = "content"> <b>店家： </b><input class = "area" v-model="shop_data" /> </label>
-      <label class = "content"> <b>商品： </b><input class = "area" v-model="goods_data" /> </label>
-      <label class = "content"> <b>數量： </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
+      <label class = "content"> <b>店家: </b><input class = "area" v-model="shop_data" /> </label>
+      <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
+      <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
     </div>
     <div :key="item.id" v-for="(item, index) in items.slice().reverse()">
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
-          <label class = "checkContainer"> 
-            <b>{{ item.shop_data }}</b>
-            <input type = "checkbox" checked = "checked"  />
+          <label class = "checkContainer">
+            <input type = "checkbox"/>
             <span class="checkmark"></span>
           </label>
-        <p>商品：{{ item.goods_data }}</p>
-        <p>數量：{{ item.count_data }}</p>
+        <p class = "shop">店家: {{ item.shop_data }}</p>
+        <p>商品: {{ item.goods_data }}</p>
+        <p>數量: {{ item.count_data }}</p>
       </div>
     </div>
   </div>
@@ -98,6 +97,11 @@ body {
   margin-top: 60px;
   margin-bottom: 60px;
   font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #2c3e50;
+}
+p.shop{
+  margin-top: 30px;
 }
 .container {
   width: 80%;
@@ -123,7 +127,7 @@ body {
   /* display: block; */
   background: #f4f4f4;
   margin: 5px;
-  padding: 10px 10px 20px 10px;
+  padding: 10px 10px 1px 10px;
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: green;
@@ -143,10 +147,12 @@ body {
 }
 .checkContainer input{
   position: absolute;
+  /* left: 0px;
+  top: 0px; */
   opacity: 0;
   cursor: pointer;
-  height: 0;
-  width: 0;
+  height: 10;
+  width: 10;
 }
 .checkmark {
   position: absolute;
