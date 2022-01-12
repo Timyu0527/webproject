@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import { firebaseConfig } from "./firebase.js"
+import router from './router'
 
 // import firebase from 'firebase'
 // import "firebase/firestore"
@@ -21,4 +22,5 @@ async function getCities(db) {
 }
 console.log(getCities(db))
 
-createApp(App).mount('#app')
+createApp(App).use(router).
+  mount('#app');
