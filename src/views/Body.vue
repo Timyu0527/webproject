@@ -1,32 +1,33 @@
 <template>
-<<<<<<< HEAD
   <div class="container">
     <h1>
       購物車
-      <!-- <Button @click="add(shop_data)" /> -->
       <button @click="add({shop_data, goods_data, count_data})" class = "button">新增</button>
     </h1>
     <div class="dataIn">
-      <label class = "content"> <b>店家： </b><input class = "area" v-model="shop_data" /> </label>
-      <label class = "content"> <b>商品： </b><input class = "area" v-model="goods_data" /> </label>
-      <label class = "content"> <b>數量： </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
+      <label class = "content"> <b>店家: </b><input class = "area" v-model="shop_data" /> </label>
+      <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
+      <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
     </div>
     <div :key="item.id" v-for="(item, index) in items.slice().reverse()">
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
-          <label class = "checkContainer"> 
-            <b>{{ item.shop }}</b>
-            <input type = "checkbox" checked = "checked"  />
+          <label class = "checkContainer">
+            <input type = "checkbox"/>
             <span class="checkmark"></span>
           </label>
-        <p>商品：{{ item.goods }}</p>
-        <p>數量：{{ item.count }}</p>
+        <p class = "shop">店家: {{ item.shop_data }}</p>
+        <p>商品: {{ item.goods_data }}</p>
+        <p>數量: {{ item.count_data }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { db } from '../main.js'
+// import { collection } from 'firebase/firestore/lite';
+import { doc, getDoc, updateDoc } from 'firebase/firestore/lite';
 export default {
   name: "App",
   data() {
@@ -36,6 +37,13 @@ export default {
       goods_data: "",
       count_data: "1",
     };
+  },
+  mounted(){
+    getDoc(doc(db, 'shopCart', 'item')).then((data) => {
+      this.items = data.data().all_goods;
+      console.log(data.data().all_goods);
+      console.log(this.items);
+    });
   },
   methods: {
     add: function add(data) {
@@ -59,16 +67,18 @@ export default {
       // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
       this.items.push({
         id: Date.now(),
-        shop: data.shop_data,
+        shop_data: data.shop_data,
         // goods: currentDateWithFormat,
-        goods: data.goods_data,
-        count: data.count_data,
+        goods_data: data.goods_data,
+        count_data: data.count_data,
+      });
+      updateDoc(doc(db, 'shopCart', 'item'),{
+        all_goods: this.items
       });
       this.goods_data = "";
       this.shop_data = "";
       this.count_data = "1";
     },
-
     onDelete: function onDelete(id) {
       this.items.splice(id, 1);
     },
@@ -76,29 +86,22 @@ export default {
 };
 </script>
 
-=======
-  <div id="nav">
-    <router-link to="/">首頁</router-link> |
-    <router-link to="/Body">你的購物清單</router-link> |
-    <router-link to="/Login">登入</router-link> | 
-    <router-link to="/Register">註冊</router-link>
-  </div>
-  <router-view/>
-</template>
-
->>>>>>> fe37b3f2a732fe737f328f1b83ca82a3e6a84100
 <style>
 /* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-<<<<<<< HEAD
   color: #2c3e50;
 } */
 body {
   margin-top: 60px;
   margin-bottom: 60px;
   font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #2c3e50;
+}
+p.shop{
+  margin-top: 30px;
 }
 .container {
   width: 80%;
@@ -124,7 +127,7 @@ body {
   /* display: block; */
   background: #f4f4f4;
   margin: 5px;
-  padding: 10px 10px 20px 10px;
+  padding: 10px 10px 1px 10px;
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: green;
@@ -144,10 +147,12 @@ body {
 }
 .checkContainer input{
   position: absolute;
+  /* left: 0px;
+  top: 0px; */
   opacity: 0;
   cursor: pointer;
-  height: 0;
-  width: 0;
+  height: 10;
+  width: 10;
 }
 .checkmark {
   position: absolute;
@@ -210,27 +215,4 @@ body {
   border-radius: 4px;
   box-sizing: border-box;
 }
-
 </style>
-=======
-  text-align: center;
-  color: #2c3e50;
-} */
-
-#nav {
-  padding: 30px;
-  text-align: center;
-  font-size: 20px;
-}
-
-#nav a {
-  text-decoration: none;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
->>>>>>> fe37b3f2a732fe737f328f1b83ca82a3e6a84100
