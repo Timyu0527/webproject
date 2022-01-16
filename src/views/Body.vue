@@ -13,21 +13,27 @@
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
           <label class = "checkContainer">
-            <input type = "checkbox"/>
+            <input type = "checkbox" v-model="item.completed" :id="item.id">
             <span class="checkmark"></span>
           </label>
-        <p class = "shop">店家: {{ item.shop_data }}</p>
-        <p>商品: {{ item.goods_data }}</p>
-        <p>數量: {{ item.count_data }}</p>
+          <!-- <transition name="show">
+            <p v-if="fade"> -->
+              <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
+                <h3 class = "shop">店家: {{ item.shop_data }}</h3>
+                <p class="">商品: {{ item.goods_data }}</p>
+                <p>數量: {{ item.count_data }}</p>
+              </label>
+            <!-- </p>
+          </transition> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { db } from '../main.js'
-// import { collection } from 'firebase/firestore/lite';
+import { db } from '../firebase.js'
 import { doc, getDoc, updateDoc } from 'firebase/firestore/lite';
+
 export default {
   name: "App",
   data() {
@@ -47,7 +53,6 @@ export default {
   },
   methods: {
     add: function add(data) {
-      // console.log(data);
       Date.prototype.toJSONLocal = function () {
         function addZ(n) {
           return (n < 10 ? "0" : "") + n;
@@ -100,7 +105,10 @@ body {
   font-weight: bold;
   color: #2c3e50;
 }
-p.shop{
+.do{
+  text-decoration: line-through;
+}
+h3.shop{
   margin-top: 30px;
 }
 .container {
@@ -131,6 +139,7 @@ p.shop{
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: green;
+  border-radius: 6px;
 }
 .checkContainer{
   display: block;
@@ -179,8 +188,8 @@ p.shop{
   display: block;
 }
 .checkContainer .checkmark:after {
-  left: 6px;
-  top: 2px;
+  left: 7px;
+  top: 4px;
   width: 5px;
   height: 10px;
   border: solid white;

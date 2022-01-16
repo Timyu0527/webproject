@@ -16,21 +16,21 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Body.vue')
   },
   {
-        path: '/login',
-        name: 'login',
-        component: () =>
-        import("@/views/Login.vue"),
-    },
-    {
-        path: '/register',
-        name: 'register',
-        component: () =>
-        import("@/views/Register.vue"),
-    },
-    // {
-    //     path: '/',
-    //     // component: ,
-    // }
+    path: '/login',
+    name: 'login',
+    component: () =>
+    import("@/views/Login.vue"),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () =>
+    import("@/views/Register.vue"),
+  },
+  // {
+  //     path: '/',
+  //     // component: ,
+  // }
 ]
 
 const router = createRouter({

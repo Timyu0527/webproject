@@ -12,9 +12,16 @@
   },
   "main": "babel.config.js",
   "dependencies": {
+    "animejs": "^3.2.1",
+    "bootstrap": "^5.1.3",
+    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "firebase": "^9.4.1",
-    "vue": "^3.0.0",
+    "jquery": "^3.6.0",
+    "popper.js": "^1.16.1",
+    "vue": "^3.2.26",
+    "vue-animejs": "^2.1.1",
+    "vue-router-slider": "^0.1.0",
     "vuefire": "^2.2.5"
   },
   "devDependencies": {
