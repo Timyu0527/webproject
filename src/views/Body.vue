@@ -9,7 +9,7 @@
       <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
       <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
     </div>
-    <div :key="item.id" v-for="(item, index) in items.slice().reverse()">
+    <div :key="item.id" v-for="(item, index) in items">
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
           <label class = "checkContainer">
@@ -27,7 +27,7 @@
 <script>
 import { db } from '../main.js'
 // import { collection } from 'firebase/firestore/lite';
-import { doc, getDoc, updateDoc } from 'firebase/firestore/lite';
+import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
 export default {
   name: "App",
   data() {
@@ -65,7 +65,7 @@ export default {
         return;
       }
       // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
-      this.items.push({
+      this.items.unshift({
         id: Date.now(),
         shop_data: data.shop_data,
         // goods: currentDateWithFormat,
@@ -73,7 +73,7 @@ export default {
         count_data: data.count_data,
       });
       updateDoc(doc(db, 'shopCart', 'item'),{
-        all_goods: this.items
+        all_goods: arrayUnion(data)
       });
       this.goods_data = "";
       this.shop_data = "";
