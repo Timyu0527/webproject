@@ -10,8 +10,8 @@
          |
         <!-- <div v-if="show === 'register'" key="register"> -->
           <router-link to="/Register" @click="show = login">註冊</router-link>
-        <!-- </div> -->
-      <!-- </transition-group>
+        <!-- </div>
+      </transition-group>
     </div> -->
   </div>
   <!-- <transition :name="transitionName">
@@ -42,9 +42,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    background-color: black;
   } */
-
   #nav {
     padding: 30px;
     text-align: center;
@@ -93,7 +92,7 @@
   } */
   
   .fade-enter-from, .fade-leave-to{
-    opacity: 0;
+    opacity: 1;
   }
   .fade-enter-active, .fade-leave-active {
     transition: opacity 1.5s;

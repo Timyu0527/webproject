@@ -1,5 +1,5 @@
 <template>
-<link href='https://fonts.googleapis.com/css?family=Lora:400italic' rel='stylesheet' type='text/css'>
+<!-- <link href='https://fonts.googleapis.com/css?family=Lora:400italic' rel='stylesheet' type='text/css'> -->
   <div class="home">
     <h1 class="ml1" ref="ml1">
       <span class="text-wrapper" ref="textWrapper">
@@ -8,20 +8,11 @@
         <span class="line line2" ref="lineLine2"></span>
       </span>
     </h1>
-    <button type="button" class="btn btn-outline-info">Primary</button>
     <h3><a href="https://prezi.com/view/Wwh0ajJxJx7137RzVFba/" class="link-info" target="_blank" style="text-decoration:none">投影片</a></h3>
-    <div id="demo">
-      <button v-on:click="show = !show">
-        Toggle
-      </button>
-      <transition name="fade">
-        <p v-if="show">hello</p>
-      </transition>
-    </div>
   </div>
 </template>
 <script>
-  import { translate, translate1} from "../animate";
+  import { translate, translate1, translate2 } from "../animate";
 
   export default {
     data() {
@@ -36,6 +27,8 @@
       translate('.ml1 .letter');
       translate1(this.$refs.lineLine1);
       translate1(this.$refs.lineLine2);
+      translate2(this.$refs.lineLine1);
+      translate2(this.$refs.lineLine2);
     },
   };
 </script>
