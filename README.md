@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+# finalproject
+=======
 # webproject
+>>>>>>> fe37b3f2a732fe737f328f1b83ca82a3e6a84100
 
 ## Project setup
 ```

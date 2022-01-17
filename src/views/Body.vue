@@ -9,25 +9,31 @@
       <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
       <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
     </div>
-    <div :key="item.id" v-for="(item, index) in items.slice().reverse()">
+    <div :key="item.id" v-for="(item, index) in items">
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
           <label class = "checkContainer">
-            <input type = "checkbox"/>
+            <input type = "checkbox" v-model="item.completed" :id="item.id">
             <span class="checkmark"></span>
           </label>
-        <p class = "shop">店家: {{ item.shop_data }}</p>
-        <p>商品: {{ item.goods_data }}</p>
-        <p>數量: {{ item.count_data }}</p>
+          <!-- <transition name="show">
+            <p v-if="fade"> -->
+              <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
+                <h3 class = "shop">店家: {{ item.shop_data }}</h3>
+                <p class="">商品: {{ item.goods_data }}</p>
+                <p>數量: {{ item.count_data }}</p>
+              </label>
+            <!-- </p>
+          </transition> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { db } from '../main.js'
-// import { collection } from 'firebase/firestore/lite';
-import { doc, getDoc, updateDoc } from 'firebase/firestore/lite';
+import { db } from '../firebase.js'
+// import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore/lite';
 export default {
   name: "App",
   data() {
@@ -46,8 +52,7 @@ export default {
     });
   },
   methods: {
-    add: function add(data) {
-      // console.log(data);
+    add: function (data) {
       Date.prototype.toJSONLocal = function () {
         function addZ(n) {
           return (n < 10 ? "0" : "") + n;
@@ -65,7 +70,7 @@ export default {
         return;
       }
       // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
-      this.items.push({
+      this.items.unshift({
         id: Date.now(),
         shop_data: data.shop_data,
         // goods: currentDateWithFormat,
@@ -73,13 +78,16 @@ export default {
         count_data: data.count_data,
       });
       updateDoc(doc(db, 'shopCart', 'item'),{
-        all_goods: this.items
+        all_goods: arrayUnion(data)
       });
       this.goods_data = "";
       this.shop_data = "";
       this.count_data = "1";
     },
-    onDelete: function onDelete(id) {
+    onDelete: function (id) {
+      updateDoc(doc(db, 'shopCart', 'item'),{
+        all_goods: arrayRemove(this.items[id])
+      });
       this.items.splice(id, 1);
     },
   },
@@ -94,13 +102,15 @@ export default {
   color: #2c3e50;
 } */
 body {
-  margin-top: 60px;
   margin-bottom: 60px;
   font-family: "Poppins", sans-serif;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: #2c3e50;
 }
-p.shop{
+.do{
+  text-decoration: line-through;
+}
+h3.shop{
   margin-top: 30px;
 }
 .container {
@@ -111,7 +121,6 @@ p.shop{
   min-height: 100%;
   border: 3px solid seagreen;
   padding: 30px;
-  padding-top: 10px;
   border-radius: 10px;
 }
 .dataIn {
@@ -131,6 +140,7 @@ p.shop{
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: green;
+  border-radius: 6px;
 }
 .checkContainer{
   display: block;
@@ -179,8 +189,8 @@ p.shop{
   display: block;
 }
 .checkContainer .checkmark:after {
-  left: 6px;
-  top: 2px;
+  left: 7px;
+  top: 4px;
   width: 5px;
   height: 10px;
   border: solid white;
@@ -192,7 +202,7 @@ p.shop{
 .button {
   float: right;
   background-color: rgb(38, 171, 26); /* Green */
-  margin: 0px;
+  margin-top: 0px;
   border: none;
   color: white;
   padding: 10px 20px;
