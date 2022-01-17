@@ -1,33 +1,28 @@
 <template>
-  <br>
-  <br>
-  <br>
   <div class="Container">
     <h1>
       購物車
-      <button @click="add({shop_data, goods_data, count_data})" class = "button">新增</button>
     </h1>
     <div class="dataIn">
-      <label class = "content"> <b>店家: </b><input class = "area" v-model="shop_data" /> </label>
-      <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
-      <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
+      <form action="#" @submit.prevent="add({shop_data, goods_data, count_data})">
+        <button type="submit" class = "button">新增</button>
+        <label class = "content"> <b>店家: </b><input class = "area" v-model="shop_data" /> </label>
+        <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
+        <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
+      </form>
     </div>
     <div :key="item.id" v-for="(item, index) in items">
       <div class="item">
-          <i @click="onDelete(index)" class="fas fa-times"></i>
-          <label class = "checkContainer">
-            <input type = "checkbox" v-model="item.completed" :id="item.id">
-            <span class="checkmark"></span>
-          </label>
-          <!-- <transition name="show">
-            <p v-if="fade"> -->
-              <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
-                <h3 class = "shop">店家: {{ item.shop_data }}</h3>
-                <p class="">商品: {{ item.goods_data }}</p>
-                <p>數量: {{ item.count_data }}</p>
-              </label>
-            <!-- </p>
-          </transition> -->
+        <i @click="onDelete(index)" class="fas fa-times"></i>
+        <label class = "checkContainer">
+          <input type = "checkbox" v-model="item.completed" :id="item.id">
+          <span class="checkmark"></span>
+        </label>
+        <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
+          <h3 class = "shop">店家: {{ item.shop_data }}</h3>
+          <p class="">商品: {{ item.goods_data }}</p>
+          <p>數量: {{ item.count_data }}</p>
+        </label>
       </div>
     </div>
   </div>
@@ -97,7 +92,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
