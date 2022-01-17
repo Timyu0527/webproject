@@ -16,7 +16,7 @@
             <div class="invalid-feedback">Please enter correct password</div>
         </div>
         <br/>
-        <input type="submit" class="btn btn-outline-primary" value="註冊" @click="check(email, password)"/>
+        <input type="submit" class="btn btn-secondary" value="註冊" @click="check(email, password)"/>
     </form>
 </template>
 <script>
@@ -32,16 +32,16 @@ export default {
     },
     methods:{
         getData: async function (email, password){
-            await register(email, password).then(() => {console.log(1)})
+            await register(email, password);
             let authState = await getAuthState();
-            console.log(authState);
+            // console.log(authState);
             if(authState){
                 this.$router.push('/body');
                 setDoc(doc(db, 'shopCart', auth.currentUser.uid), {all_goods:[]});
             }
-            else{
-                this.$router.push('/login');
-            }
+            // else{
+            //     this.$router.push('/login');
+            // }
         },
         check: function (email, password){
             // 'use strict'
@@ -98,7 +98,7 @@ export default {
         border-radius: 10px;
         cursor: pointer;
     } */
-    .btn-outline-primary{
+    /* .btn-outline-primary{
         margin: 10px;
         border-color: green;
         color: black;
@@ -109,5 +109,5 @@ export default {
     }
     .btn-outline-primary:hover{
         background-color: greenyellow;
-    }
+    } */
 </style>

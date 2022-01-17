@@ -16,7 +16,7 @@
             <div class="invalid-feedback">Please enter correct password</div>
         </div>
         <br/>
-        <input type="submit" class="btn btn-outline-primary" value="登入" @click="check(email, password)"/>
+        <input type="submit" class="btn btn-secondary" value="登入" @click="check(email, password)"/>
     </form>
 </template>
 <script>

@@ -1,38 +1,9 @@
 <template>
-  <!-- <div id="nav">
-    <router-link to="/">首頁</router-link> |
-    
-    <span v-if="isLogin">
-      <li class="nav-item">
-        <router-link to="/body" class="link">
-          <a class="nav-link" href="#">
-            你的購物清單
-          </a>
-        </router-link> |
-        <router-link to="/" class="link" @click="userLogOut()">
-          <a class="nav-link" href="#">
-            登出
-          </a>
-        </router-link>
-      </li>
-    </span>
-    
-    <span v-else>
-      <li class="nav-item">
-        <router-link to="/login" class="link" @click="show = register">登入</router-link> | 
-        <router-link to="/register" class="link" @click="show = login">註冊</router-link>
-      </li>
-    </span>
-  </div> -->
-
-  <!-- <div class="container"> -->
     <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color: #2c3e50;">
       <div class="container-fluid">
-        
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <img src="./assets/5a364b752c0633.9984354215135077011803.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <img src="./assets/cart-59-512.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
             <span class="d-inline-flex">
               <router-link to="/">
                 <a class="nav-link" href="#">
@@ -46,6 +17,7 @@
                   你的購物清單
                 </a>
               </router-link>
+              <span v-if="isLogin" class="nav-link">{{ username }}</span>
               <router-link to="/" @click="userLogOut()">
                 <a class="nav-link" href="#">
                   登出
@@ -68,11 +40,7 @@
         </div>
       </div>
     </nav>
-  <!-- </div> -->
-  <!-- <transition :name="transitionName">
-    <router-view class="view"></router-view>
-  </transition> -->
-  <router-view></router-view>
+  <router-view/>
 </template>
 <script>
 import { onAuthStateChanged } from '@firebase/auth';
@@ -81,15 +49,22 @@ import { logout, auth } from './firebase';
   export default{
     data(){
       return {
+        username: "",
         show: 'login',
         isLogin: false,
       };
     },
     mounted(){
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
+        // let username = await getUserName();
         if(user){
           this.isLogin = true;
-          console.log('APP', user)
+          this.username = user.displayName;
+          // console.log(username);
+          // while(!this.username){
+            // this.username = auth.currentUser.displayName;
+            console.log('APP', auth.currentUser.displayName);
+          // }
         }
       });
     },
@@ -115,6 +90,9 @@ import { logout, auth } from './firebase';
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     background-color: black;
+  } */
+  /* .nav-link.username{
+    float: left;
   } */
   .link{
     text-decoration: none;
