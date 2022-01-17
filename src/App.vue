@@ -1,15 +1,74 @@
 <template>
-  <div id="nav">
+  <!-- <div id="nav">
     <router-link to="/">首頁</router-link> |
+    
     <span v-if="isLogin">
-      <router-link to="/body">你的購物清單</router-link> |
-      <router-link to="/" @click="userLogOut()">登出</router-link>
+      <li class="nav-item">
+        <router-link to="/body" class="link">
+          <a class="nav-link" href="#">
+            你的購物清單
+          </a>
+        </router-link> |
+        <router-link to="/" class="link" @click="userLogOut()">
+          <a class="nav-link" href="#">
+            登出
+          </a>
+        </router-link>
+      </li>
     </span>
+    
     <span v-else>
-      <router-link to="/login" @click="show = register">登入</router-link> | 
-      <router-link to="/register" @click="show = login">註冊</router-link>
+      <li class="nav-item">
+        <router-link to="/login" class="link" @click="show = register">登入</router-link> | 
+        <router-link to="/register" class="link" @click="show = login">註冊</router-link>
+      </li>
     </span>
-  </div>
+  </div> -->
+
+  <!-- <div class="container"> -->
+    <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color: #2c3e50;">
+      <div class="container-fluid">
+        
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <img src="./assets/5a364b752c0633.9984354215135077011803.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <span class="d-inline-flex">
+              <router-link to="/">
+                <a class="nav-link" href="#">
+                  首頁
+                </a>
+              </router-link>
+            </span>
+            <span class="d-inline-flex"  v-if="isLogin">
+              <router-link to="/body">
+                <a class="nav-link" href="#">
+                  你的購物清單
+                </a>
+              </router-link>
+              <router-link to="/" @click="userLogOut()">
+                <a class="nav-link" href="#">
+                  登出
+                </a>
+              </router-link>
+            </span>
+            <span class="d-inline-flex" v-else>
+              <router-link to="/login" @click="show = register">
+                <a class="nav-link" href="#">
+                  登入
+                </a>
+              </router-link>
+              <router-link to="/register" @click="show = login">
+                <a class="nav-link" href="#">
+                  註冊
+                </a>
+              </router-link>
+            </span>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  <!-- </div> -->
   <!-- <transition :name="transitionName">
     <router-view class="view"></router-view>
   </transition> -->
@@ -57,20 +116,24 @@ import { logout, auth } from './firebase';
     text-align: center;
     background-color: black;
   } */
+  .link{
+    text-decoration: none;
+  }
   #nav {
     padding: 30px;
     text-align: center;
     font-size: 20px;
   }
 
-  #nav a {
+  .d-inline-flex a {
     text-decoration: none;
     font-weight: bold;
     color: #2c3e50;
   }
 
-  #nav a.router-link-exact-active {
+  .d-inline-flex a.router-link-exact-active {
     color: #42b983;
+    /* color: #white; */
   }
 
   /* .slide-fade-enter-active {

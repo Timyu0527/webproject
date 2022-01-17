@@ -1,4 +1,7 @@
 <template>
+    <br>
+    <br>
+    <br>
     <form class="login needs-validation" novalidate action="#" @submit.prevent="submit">
         <div class="form-floating mb-3 in">
             <input class = "form-control" type = "email" placeholder="name@example.com" v-model="email" required/>

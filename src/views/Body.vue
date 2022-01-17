@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <br>
+  <br>
+  <br>
+  <div class="Container">
     <h1>
       購物車
       <button @click="add({shop_data, goods_data, count_data})" class = "button">新增</button>
@@ -113,7 +116,7 @@ body {
 h3.shop{
   margin-top: 30px;
 }
-.container {
+.Container {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
