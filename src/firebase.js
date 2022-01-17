@@ -22,9 +22,9 @@ function register(email, password){
   console.log(email, password);
   return createUserWithEmailAndPassword(auth, email, password);
 }
-function getUserId(){
-  let userId = auth.currentUser.uid;
-  return userId;
+function getUserName(){
+  let username = auth.currentUser.displayName;
+  return username;
 }
 async function getAuthState(){
   let _user;
@@ -36,4 +36,4 @@ async function getAuthState(){
 function logout(){
   signOut(auth);
 }
-export { login, register, logout, getAuthState, getUserId };
+export { login, register, logout, getAuthState, getUserName };

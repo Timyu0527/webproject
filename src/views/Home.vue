@@ -3,11 +3,11 @@
     <h1 class="ml1" ref="ml1">
       <span class="text-wrapper" ref="textWrapper">
         <span class="line line1" ref="lineLine1"></span>
-        <span class="letters" ref="letters">歡迎使用</span>
+        <span class="letters" ref="letters">購物車網站</span>
         <span class="line line2" ref="lineLine2"></span>
       </span>
     </h1>
-    <h3><a href="https://prezi.com/view/Wwh0ajJxJx7137RzVFba/" class="link-info" target="_blank" style="text-decoration:none">投影片</a></h3>
+    <h4><a href="https://prezi.com/view/Wwh0ajJxJx7137RzVFba/" class="link-info" target="_blank" style="text-decoration:none">投影片</a></h4>
   </div>
 </template>
 <script>
@@ -76,4 +76,8 @@
   }
   .ml1 .line1 { top: 0; }
   .ml1 .line2 { bottom: 0; }
+  a {
+    /* left: 50%; */
+    bottom: 70px;
+  }
 </style>

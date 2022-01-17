@@ -51,18 +51,25 @@
 import { onAuthStateChanged } from "@firebase/auth";
 import { logout, auth } from "./firebase";
 
-export default {
-  data() {
+export default{
+  data(){
     return {
-      show: "login",
+      username: "",
+      show: 'login',
       isLogin: false,
     };
   },
-  mounted() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+  mounted(){
+    onAuthStateChanged(auth, async (user) => {
+      // let username = await getUserName();
+      if(user){
         this.isLogin = true;
-        console.log("APP", user);
+        this.username = user.displayName;
+        // console.log(username);
+        // while(!this.username){
+          // this.username = auth.currentUser.displayName;
+          console.log('APP', auth.currentUser.displayName);
+        // }
       }
     });
   },
@@ -72,7 +79,7 @@ export default {
       this.isLogin = false;
     },
   },
-};
+}
 </script>
 
 <style>
