@@ -1,37 +1,38 @@
 <template>
-  <nav
-    class="navbar navbar-expand-lg navbar-dark"
-    style="background-color: #2c3e50"
-  >
+  <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color: #2c3e50;">
     <div class="container-fluid">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <img
-            src="./assets/5a364b752c0633.9984354215135077011803.png"
-            alt=""
-            width="30"
-            height="24"
-            class="d-inline-block align-text-top"
-          />
+          <img src="./assets/5a364b752c0633.9984354215135077011803.png" alt="Shoplist" width="35" height="35" class="d-inline-block align-text-top">
           <span class="d-inline-flex">
             <router-link to="/">
-              <a class="nav-link" href="#"> 首頁 </a>
+              <a class="nav-link" href="#">
+                首頁
+              </a>
             </router-link>
           </span>
-          <span class="d-inline-flex" v-if="isLogin">
+          <span class="d-inline-flex"  v-if="isLogin">
             <router-link to="/body">
-              <a class="nav-link" href="#"> 你的購物清單 </a>
+              <a class="nav-link" href="#">
+                你的購物清單
+              </a>
             </router-link>
             <router-link to="/" @click="userLogOut()">
-              <a class="nav-link" href="#"> 登出 </a>
+              <a class="nav-link" href="#">
+                登出
+              </a>
             </router-link>
           </span>
           <span class="d-inline-flex" v-else>
-            <router-link to="/login" @click="show = register">
-              <a class="nav-link" href="#"> 登入 </a>
+            <router-link to="/login"  @click="show = register">
+              <a class="nav-link" href="#">
+                登入
+              </a>
             </router-link>
             <router-link to="/register" @click="show = login">
-              <a class="nav-link" href="#"> 註冊 </a>
+              <a class="nav-link" href="#">
+                註冊
+              </a>
             </router-link>
           </span>
         </ul>

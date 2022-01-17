@@ -61,10 +61,8 @@ export default {
         this.isLogin = true;
       }
     },
-    // checkAuthState: function checkAuthState(){
+        check: function (email, password){
 
-    // },
-    check: function (email, password) {
       let _getData = this.getData;
       // console.log(email, password);
       // Fetch all the forms we want to apply custom Bootstrap validation styles to

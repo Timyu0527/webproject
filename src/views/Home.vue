@@ -20,15 +20,23 @@
         isLogin: false,
       };
     },
-    mounted(){
-      let textWrapper = document.querySelector('.ml1 .letters');
-      textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-      translate('.ml1 .letter');
-      translate1(this.$refs.lineLine1);
-      translate1(this.$refs.lineLine2);
-      translate2(this.$refs.lineLine1);
-      translate2(this.$refs.lineLine2);
+    updated(){
+      this.letterTranslate()
     },
+    mounted(){
+      this.letterTranslate()
+    },
+    methods:{
+      letterTranslate: function(){      
+        let textWrapper = document.querySelector('.ml1 .letters');
+        textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+        translate('.ml1 .letter');
+        translate1(this.$refs.lineLine1);
+        translate1(this.$refs.lineLine2);
+        translate2(this.$refs.lineLine1);
+        translate2(this.$refs.lineLine2);
+      }
+    }
   };
 </script>
 

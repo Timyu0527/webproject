@@ -31,12 +31,3 @@ export function translate2(element) {
     delay: 1700
   });
 }
-export function translate3(element) {
-  anime({
-    targets: element,
-    opacity: 0,
-    duration: 1000,
-    easing: "easeOutExpo",
-    delay: 0
-  });
-}
