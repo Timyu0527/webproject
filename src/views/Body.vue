@@ -1,7 +1,4 @@
 <template>
-  <br>
-  <br>
-  <br>
   <div class="Container">
     <h1>
       購物車

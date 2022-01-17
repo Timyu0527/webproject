@@ -1,179 +1,107 @@
 <template>
-  <!-- <div id="nav">
-    <router-link to="/">首頁</router-link> |
-    
-    <span v-if="isLogin">
-      <li class="nav-item">
-        <router-link to="/body" class="link">
-          <a class="nav-link" href="#">
-            你的購物清單
-          </a>
-        </router-link> |
-        <router-link to="/" class="link" @click="userLogOut()">
-          <a class="nav-link" href="#">
-            登出
-          </a>
-        </router-link>
-      </li>
-    </span>
-    
-    <span v-else>
-      <li class="nav-item">
-        <router-link to="/login" class="link" @click="show = register">登入</router-link> | 
-        <router-link to="/register" class="link" @click="show = login">註冊</router-link>
-      </li>
-    </span>
-  </div> -->
-
-  <!-- <div class="container"> -->
-    <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color: #2c3e50;">
-      <div class="container-fluid">
-        
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <img src="./assets/5a364b752c0633.9984354215135077011803.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-            <span class="d-inline-flex">
-              <router-link to="/">
-                <a class="nav-link" href="#">
-                  首頁
-                </a>
-              </router-link>
-            </span>
-            <span class="d-inline-flex"  v-if="isLogin">
-              <router-link to="/body">
-                <a class="nav-link" href="#">
-                  你的購物清單
-                </a>
-              </router-link>
-              <router-link to="/" @click="userLogOut()">
-                <a class="nav-link" href="#">
-                  登出
-                </a>
-              </router-link>
-            </span>
-            <span class="d-inline-flex" v-else>
-              <router-link to="/login" @click="show = register">
-                <a class="nav-link" href="#">
-                  登入
-                </a>
-              </router-link>
-              <router-link to="/register" @click="show = login">
-                <a class="nav-link" href="#">
-                  註冊
-                </a>
-              </router-link>
-            </span>
-          </ul>
-        </div>
+  <nav
+    class="navbar navbar-expand-lg navbar-dark"
+    style="background-color: #2c3e50"
+  >
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <img
+            src="./assets/5a364b752c0633.9984354215135077011803.png"
+            alt=""
+            width="30"
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          <span class="d-inline-flex">
+            <router-link to="/">
+              <a class="nav-link" href="#"> 首頁 </a>
+            </router-link>
+          </span>
+          <span class="d-inline-flex" v-if="isLogin">
+            <router-link to="/body">
+              <a class="nav-link" href="#"> 你的購物清單 </a>
+            </router-link>
+            <router-link to="/" @click="userLogOut()">
+              <a class="nav-link" href="#"> 登出 </a>
+            </router-link>
+          </span>
+          <span class="d-inline-flex" v-else>
+            <router-link to="/login" @click="show = register">
+              <a class="nav-link" href="#"> 登入 </a>
+            </router-link>
+            <router-link to="/register" @click="show = login">
+              <a class="nav-link" href="#"> 註冊 </a>
+            </router-link>
+          </span>
+        </ul>
       </div>
-    </nav>
-  <!-- </div> -->
-  <!-- <transition :name="transitionName">
-    <router-view class="view"></router-view>
-  </transition> -->
-  <router-view></router-view>
+    </div>
+  </nav>
+  <router-view v-slot="{ Component }">
+    <transition name="fade" mode="out-in">
+      <keep-alive>
+        <component :is="Component"></component>
+      </keep-alive>
+    </transition>
+  </router-view>
 </template>
 <script>
-import { onAuthStateChanged } from '@firebase/auth';
-import { logout, auth } from './firebase';
+import { onAuthStateChanged } from "@firebase/auth";
+import { logout, auth } from "./firebase";
 
-  export default{
-    data(){
-      return {
-        show: 'login',
-        isLogin: false,
-      };
-    },
-    mounted(){
-      onAuthStateChanged(auth, (user) => {
-        if(user){
-          this.isLogin = true;
-          console.log('APP', user)
-        }
-      });
-    },
-    methods: {
-      userLogOut: function (){
-        logout();
-        this.isLogin= false;
+export default {
+  data() {
+    return {
+      show: "login",
+      isLogin: false,
+    };
+  },
+  mounted() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.isLogin = true;
+        console.log("APP", user);
       }
-    }
-    // beforeRouteUpdate (to, from, next) {
-    //   const toDepth = to.path.split('/').length
-    //   const fromDepth = from.path.split('/').length
-    //   this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-    //   next()
-    // },
-  };
+    });
+  },
+  methods: {
+    userLogOut: function () {
+      logout();
+      this.isLogin = false;
+    },
+  },
+};
 </script>
 
 <style>
-  /* #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    background-color: black;
-  } */
-  .link{
-    text-decoration: none;
-  }
-  #nav {
-    padding: 30px;
-    text-align: center;
-    font-size: 20px;
-  }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .1s;
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0;
+}
 
-  .d-inline-flex a {
-    text-decoration: none;
-    font-weight: bold;
-    color: #2c3e50;
-  }
+.Container {
+  margin-top: 100px;
+}
 
-  .d-inline-flex a.router-link-exact-active {
-    color: #42b983;
-    /* color: #white; */
-  }
+.link {
+  text-decoration: none;
+}
+#nav {
+  padding: 30px;
+  text-align: center;
+  font-size: 20px;
+}
 
-  /* .slide-fade-enter-active {
-    transition: all .3s ease;
-  }
-  .slide-fade-leave-active {
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  .slide-fade-enter, .slide-fade-leave-to{
-    transform: translateX(10px);
-    opacity: 0;
-  } */
-  /* .fade-enter-active, .fade-leave-active {
-    transition: opacity .75s ease;
-  } */
-  /* .fade-enter, .fade-leave-active {
-    opacity: 0;
-  } */
-  /* .child-view {
-    position: absolute;
-    transition: all .75s cubic-bezier(.55,0,.1,1);
-  }
-  .slide-left-enter, .slide-right-leave-active {
-    opacity: 0;
-    -webkit-transform: translate(30px, 0);
-    transform: translate(30px, 0);
-  }
-  .slide-left-leave-active, .slide-right-enter {
-    opacity: 0;
-    -webkit-transform: translate(-30px, 0);
-    transform: translate(-30px, 0);
-  } */
-  
-  .fade-enter-from, .fade-leave-to{
-    opacity: 1;
-  }
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 1.5s;
-  }
-  .fade-enter-to, .fade-leave-from{
-    opacity: 1;
-  }
+.d-inline-flex a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.d-inline-flex a.router-link-exact-active {
+  color: #42b983;
+}
 </style>

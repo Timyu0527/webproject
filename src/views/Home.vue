@@ -1,8 +1,5 @@
 <template>
-  <br>
-  <br>
-  <br>
-  <div class="home">
+  <div class="home Container">
     <h1 class="ml1" ref="ml1">
       <span class="text-wrapper" ref="textWrapper">
         <span class="line line1" ref="lineLine1"></span>
