@@ -1,5 +1,7 @@
 <template>
-<!-- <link href='https://fonts.googleapis.com/css?family=Lora:400italic' rel='stylesheet' type='text/css'> -->
+  <br>
+  <br>
+  <br>
   <div class="home">
     <h1 class="ml1" ref="ml1">
       <span class="text-wrapper" ref="textWrapper">
