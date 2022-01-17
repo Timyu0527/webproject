@@ -16,7 +16,11 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 export const auth = getAuth();
 function login(email, password){
-  return signInWithEmailAndPassword(auth, email, password);
+  // return new Promise((res, rej) => {
+  signInWithEmailAndPassword(auth, email, password).then(() => {
+    console.log('success');
+  }).catch((e) => {console.log(e)});
+  // });
 }
 function register(email, password){
   console.log(email, password);

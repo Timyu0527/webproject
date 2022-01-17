@@ -1,19 +1,19 @@
 <template>
-    <form class = "login needs-validation" novalidate>
+    <form class="login needs-validation" action="#"  @submit.prevent="submit" novalidate>
         <div class="form-floating mb-3 in">
-            <input class = "form-control" type = "email" placeholder="name@example.com" v-model="email" required/>
+            <input class="form-control" type="email" placeholder="name@example.com" v-model="email" required/>
             <label for="floatingInput">Email address</label>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please enter correct Email</div>
         </div>
         <div class="form-floating mb-3 in">
-            <input class = "form-control" type = "password" placeholder="password" v-model="password" required/>
+            <input class="form-control" type="password" placeholder="password" v-model="password" required/>
             <label for="floatingInput">Password</label>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please enter correct password</div>
         </div>
         <br/>
-        <input type = "submit" class = "btn btn-outline-primary" value = "登入" @click="check(email, password)"/>
+        <button type="submit" class="btn btn-outline-primary" value="登入" @click="getData(email, password)"></button>
     </form>
 </template>
 <script>
@@ -27,34 +27,40 @@ export default {
         };
     },
     methods:{
-        getData: function getData(email, password){
-            console.log(login(email, password));
-            this.$router.push('/Body');
-            // console.log(email, password);
+        getData: async function getData(email, password){
+            console.log(email, password);
+            login(email, password)
+            // .then(() => {
+            //     console.log('login success');
+            // }).catch((e)=>{
+            //     console.log(e);
+            // })
         },
-        check: function check(email, password){
-            'use strict'
+        // check: function check(email, password){
+        //     'use strict'
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            let forms = document.querySelectorAll('.needs-validation');
-            let currect = 1;
-            // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        currect = 0;
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
+        //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        //     let forms=document.querySelectorAll('.needs-validation');
+        //     let currect=1;
+        //     let _getData=this.getData;
+        //     // Loop over them and prevent submission
+        //     Array.prototype.slice.call(forms)
+        //         .forEach(function (form) {
+        //         form.addEventListener('submit', (event) => {
+        //             if (!form.checkValidity()) {
+        //                 currect=0;
+        //                 event.preventDefault()
+        //                 event.stopPropagation()
+        //             }
 
-                    form.classList.add('was-validated')
-                }, false)
-                if(currect){
-                    this.getData(email, password);
-                }
-                })
-        }
+        //             form.classList.add('was-validated')
+        //         }, false)
+        //         if(currect){
+        //             console.log(email, password);
+        //             _getData(email, password);
+        //         }
+        //     })
+        // }
     }
 }
 </script>
