@@ -33,7 +33,7 @@
       <br />
       <input
         type="submit"
-        class="btn btn-outline-primary"
+        class="btn btn-secondary"
         value="登入"
         @click="check(email, password)"
       />
@@ -59,9 +59,10 @@ export default {
       if (getAuthState()) {
         this.$router.push("/body");
         this.isLogin = true;
+        // auth.currentUser.displayName = this.email.split("@")[0];
       }
     },
-        check: function (email, password){
+    check: function (email, password){
 
       let _getData = this.getData;
       // console.log(email, password);
@@ -83,7 +84,6 @@ export default {
           false
         );
         if (currect) {
-          // login()
           _getData(email, password);
         }
       });

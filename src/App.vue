@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <img src="./assets/5a364b752c0633.9984354215135077011803.png" alt="Shoplist" width="35" height="35" class="d-inline-block align-text-top">
+          <img src="./assets/cart-59-512.png" alt="Shoplist" width="35" height="35" class="d-inline-block align-text-top">
           <span class="d-inline-flex">
             <router-link to="/">
               <a class="nav-link" href="#">
@@ -22,6 +22,7 @@
                 登出
               </a>
             </router-link>
+            <span v-if="isLogin" class="nav-link">{{ username }}</span>
           </span>
           <span class="d-inline-flex" v-else>
             <router-link to="/login"  @click="show = register">
@@ -58,6 +59,21 @@ export default{
       show: 'login',
       isLogin: false,
     };
+  },
+  updated(){
+    onAuthStateChanged(auth, async (user) => {
+      // let username = await getUserName();
+      if(user){
+        this.isLogin = true;
+        this.username = user.displayName;
+        // console.log(username);
+        // while(!this.username){
+          // this.username = auth.currentUser.displayName;
+          console.log('APP', auth.currentUser.displayName);
+        // }
+      }
+    });
+
   },
   mounted(){
     onAuthStateChanged(auth, async (user) => {

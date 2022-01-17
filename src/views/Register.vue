@@ -33,7 +33,7 @@
       <br />
       <input
         type="submit"
-        class="btn btn-outline-primary"
+        class="btn btn-secondary"
         value="註冊"
         @click="check(email, password)"
       />

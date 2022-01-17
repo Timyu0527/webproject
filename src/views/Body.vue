@@ -2,13 +2,15 @@
   <div class="Container">
     <h1>
       購物車
-      <button @click="add({shop_data, goods_data, count_data, completed})" class="btn btn-success pos">新增</button>
-      <button @click="clear()" class="btn btn-danger pos">清空</button>
     </h1>
     <div class="dataIn">
-      <label class="content"><b>店家: </b><input class="area" v-model="shop_data" /></label>
-      <label class="content"><b>商品: </b><input class="area" v-model="goods_data" /></label>
-      <label class="content"><b>數量: </b><input class="area" v-model="count_data" type="number" min="1"/></label>
+      <button @click="clear()" class="btn btn-danger pos">清空</button>
+      <form action="#" @submit.prevent="add({shop_data, goods_data, count_data, completed})">
+        <button type="submit" class="btn btn-success pos">新增</button>
+        <label class="content"><b>店家: </b><input class="area" v-model="shop_data" /></label>
+        <label class="content"><b>商品: </b><input class="area" v-model="goods_data" /></label>
+        <label class="content"><b>數量: </b><input class="area" v-model="count_data" type="number" min="1"/></label>
+      </form>
     </div>
     <div :key="item.id" v-for="(item, index) in items">
       <div class="item">
