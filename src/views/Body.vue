@@ -5,12 +5,17 @@
     </h1>
     <div class="dataIn">
       <button @click="clear()" class="btn btn-danger pos">清空</button>
-      <form action="#" @submit.prevent="add({shop_data, goods_data, count_data, completed})">
+      <form action="#" @submit.prevent="add({shop_data, goods_data, count_data, price_data, completed})">
         <button type="submit" class="btn btn-success pos">新增</button>
         <label class="content"><b>店家: </b><input class="area" v-model="shop_data" /></label>
         <label class="content"><b>商品: </b><input class="area" v-model="goods_data" /></label>
         <label class="content"><b>數量: </b><input class="area" v-model="count_data" type="number" min="1"/></label>
+        <label class="content"><b>價格: </b><input class="area" v-model="price_data" type="number" min="1"/></label>
       </form>
+      <div class="price">
+        <span></span>
+        <span>合計: {{ total_price }} NTD</span>
+      </div>
     </div>
     <div :key="item.id" v-for="(item, index) in items">
       <div class="item">
@@ -30,6 +35,7 @@
                 <h3 class="shop">店家: {{ item.shop_data }}</h3>
                 <p class="">商品: {{ item.goods_data }}</p>
                 <p>數量: {{ item.count_data }}</p>
+                <p>價格: {{ item.price_data}}</p>
               </label>
             <!-- </p>
           </transition> -->
@@ -50,6 +56,7 @@ export default {
       shop_data: "",
       goods_data: "",
       count_data: "",
+      price_data: "",
       total_price: 0,
       completed: false,
     };
@@ -58,6 +65,9 @@ export default {
     getDoc(doc(db, 'shopCart', auth.currentUser.uid)).then((data) => {
       this.items = data.data().all_goods;
       // console.log(data.data().all_goods);
+      for(let value of this.items){
+        this.total_price += (value.price_data * value.count_data);
+      }
       // console.log(this.items);
     });
   },
@@ -87,7 +97,10 @@ export default {
           addZ(this.getDate())
         );
       };
-      if(data.shop_data == "" || data.goods_data == "" || (!isFinite(data.count_data) && parseInt(data.count_data) > 0)){
+      if(data.shop_data == "" ||
+         data.goods_data == "" ||
+         (!isFinite(data.count_data) && parseInt(data.count_data) > 0) ||
+         (!isFinite(data.price_data) && parseInt(data.price_data) > 0)){
         alert("無效的輸入");
         return;
       }
@@ -98,6 +111,7 @@ export default {
         // goods: currentDateWithFormat,
         goods_data: data.goods_data,
         count_data: data.count_data,
+        price_data: data.price_data,
         completed: data.completed,
       });
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
@@ -106,8 +120,11 @@ export default {
       this.goods_data = "";
       this.shop_data = "";
       this.count_data = "";
+      this.price_data = "";
+      this.total_price += data.price_data * data.count_data;
     },
     onDelete: function (id) {
+      this.total_price -= parseInt(this.items[id].price_data * this.items[id].count_data);
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayRemove(this.items[id])
       });
@@ -118,6 +135,7 @@ export default {
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: []
       });
+      this.total_price = 0;
     }
   },
 };
@@ -256,5 +274,17 @@ h3.shop{
 .pos{
   float: right;
   margin:10px;
+}
+.price{
+  /* align-self: right; */
+  /* text-align: right; */
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  line-height: 30px;
+  padding: 5px 15px;
+  font-size: 18px;
+  color: #212121;
+  margin-bottom: 20px;
 }
 </style>
