@@ -17,7 +17,7 @@
     </form>
 </template>
 <script>
-import { login, getAuthState } from '../firebase.js';
+import { login, getAuthState, auth } from '../firebase.js';
 // import { login } from '../firebase.js';
 export default {
     data() {
@@ -29,13 +29,16 @@ export default {
         };
     },
     methods:{
-        getData: function (email, password){
-            login(email, password);
+        getData: async function (email, password){
+            await login(email, password);
             // login(email, password);
-            if(getAuthState()) {
+            let state = await getAuthState();
+            if(state) {
                 this.$router.push('/body');
                 this.isLogin = true;
+                auth.currentUser.displayName = email.split('@')[0];
             }
+            console.log(auth.currentUser.displayName);
         },
         // checkAuthState: function checkAuthState(){
             

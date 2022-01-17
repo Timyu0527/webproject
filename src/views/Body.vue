@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { db } from '../firebase.js'
+import { auth, db } from '../firebase.js'
 // import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore/lite';
 export default {
@@ -41,11 +41,11 @@ export default {
       items: [],
       shop_data: "",
       goods_data: "",
-      count_data: "1",
+      count_data: "",
     };
   },
   mounted(){
-    getDoc(doc(db, 'shopCart', 'item')).then((data) => {
+    getDoc(doc(db, 'shopCart', auth.currentUser.uid)).then((data) => {
       this.items = data.data().all_goods;
       console.log(data.data().all_goods);
       console.log(this.items);
@@ -65,8 +65,8 @@ export default {
           addZ(this.getDate())
         );
       };
-      if(data.shop_data == "" && data.goods_data == ""){
-        alert("輸入請勿留白");
+      if(data.shop_data == "" || data.goods_data == "" || (!isFinite(data.count_data) && parseInt(data.count_data) > 0)){
+        alert("無效的輸入");
         return;
       }
       // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
@@ -77,15 +77,15 @@ export default {
         goods_data: data.goods_data,
         count_data: data.count_data,
       });
-      updateDoc(doc(db, 'shopCart', 'item'),{
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayUnion(data)
       });
       this.goods_data = "";
       this.shop_data = "";
-      this.count_data = "1";
+      this.count_data = "";
     },
     onDelete: function (id) {
-      updateDoc(doc(db, 'shopCart', 'item'),{
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayRemove(this.items[id])
       });
       this.items.splice(id, 1);

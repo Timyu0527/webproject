@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore/lite';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDtrtsJaFh8mQgvlyAxJVG2tm5ugbC0IsI",
@@ -22,10 +22,13 @@ function register(email, password){
   console.log(email, password);
   return createUserWithEmailAndPassword(auth, email, password);
 }
+function getUserId(){
+  let userId = auth.currentUser.uid;
+  return userId;
+}
 async function getAuthState(){
   let _user;
   await onAuthStateChanged(auth, (user) =>{
-    console.log(user)
     _user = user;
   });
   return _user;
@@ -33,4 +36,4 @@ async function getAuthState(){
 function logout(){
   signOut(auth);
 }
-export { login, register, logout, getAuthState };
+export { login, register, logout, getAuthState, getUserId };

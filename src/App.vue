@@ -3,7 +3,7 @@
     <router-link to="/">首頁</router-link> |
     <span v-if="isLogin">
       <router-link to="/body">你的購物清單</router-link> |
-      <router-link to="/" @click="userLogOut()">登出</router-link>
+      <router-link to="/logout" @click="userLogOut()">登出</router-link>
     </span>
     <span v-else>
       <router-link to="/login" @click="show = register">登入</router-link> | 

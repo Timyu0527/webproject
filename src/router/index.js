@@ -9,6 +9,11 @@ const routes = [
     component: Home
   },
   {
+    path: '/logout',
+    name: 'Logout',
+    component: Home
+  },
+  {
     path: '/body',
     name: 'Body',
     meta: {
@@ -31,10 +36,6 @@ const routes = [
     component: () =>
     import("@/views/Register.vue"),
   },
-  // {
-  //     path: '/',
-  //     // component: ,
-  // }
 ]
 
 const router = createRouter({
