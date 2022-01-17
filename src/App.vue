@@ -82,11 +82,9 @@ export default {
 .fade-enter, .fade-leave-to{
   opacity: 0;
 }
-
 .Container {
   margin-top: 100px;
 }
-
 .link {
   text-decoration: none;
 }
@@ -95,13 +93,11 @@ export default {
   text-align: center;
   font-size: 20px;
 }
-
 .d-inline-flex a {
   text-decoration: none;
   font-weight: bold;
   color: #2c3e50;
 }
-
 .d-inline-flex a.router-link-exact-active {
   color: #42b983;
 }

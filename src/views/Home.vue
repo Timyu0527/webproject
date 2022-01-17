@@ -3,7 +3,7 @@
     <h1 class="ml1" ref="ml1">
       <span class="text-wrapper" ref="textWrapper">
         <span class="line line1" ref="lineLine1"></span>
-        <span class="letters" ref="letters">歡迎使用</span>
+        <span class="letters" ref="letters">購物清單</span>
         <span class="line line2" ref="lineLine2"></span>
       </span>
     </h1>

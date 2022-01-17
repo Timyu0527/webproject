@@ -61,7 +61,7 @@ export default {
         this.isLogin = true;
       }
     },
-        check: function (email, password){
+    check: function (email, password){
 
       let _getData = this.getData;
       // console.log(email, password);
