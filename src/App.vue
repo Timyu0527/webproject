@@ -1,18 +1,14 @@
 <template>
   <div id="nav">
     <router-link to="/">首頁</router-link> |
-    <router-link to="/Body">你的購物清單</router-link> |
-    <!-- <div>
-      <transition-group name="fade" mode="out-in">
-        <div v-if="show === 'login'" key="login"> -->
-          <router-link to="/Login" @click="show = register">登入</router-link>
-        <!-- </div> -->
-         |
-        <!-- <div v-if="show === 'register'" key="register"> -->
-          <router-link to="/Register" @click="show = login">註冊</router-link>
-        <!-- </div>
-      </transition-group>
-    </div> -->
+    <span v-if="isLogin">
+      <router-link to="/body">你的購物清單</router-link> |
+      <router-link to="/" @click="userLogOut()">登出</router-link>
+    </span>
+    <span v-else>
+      <router-link to="/login" @click="show = register">登入</router-link> | 
+      <router-link to="/register" @click="show = login">註冊</router-link>
+    </span>
   </div>
   <!-- <transition :name="transitionName">
     <router-view class="view"></router-view>
@@ -20,13 +16,30 @@
   <router-view></router-view>
 </template>
 <script>
+import { onAuthStateChanged } from '@firebase/auth';
+import { logout, auth } from './firebase';
 
   export default{
     data(){
       return {
-        show: 'login'
+        show: 'login',
+        isLogin: false,
       };
     },
+    mounted(){
+      onAuthStateChanged(auth, (user) => {
+        if(user){
+          this.isLogin = true;
+          console.log('APP', user)
+        }
+      });
+    },
+    methods: {
+      userLogOut: function (){
+        logout();
+        this.isLogin= false;
+      }
+    }
     // beforeRouteUpdate (to, from, next) {
     //   const toDepth = to.path.split('/').length
     //   const fromDepth = from.path.split('/').length

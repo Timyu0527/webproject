@@ -17,13 +17,13 @@
   export default {
     data() {
       return {
-        show: true
+        show: true,
+        isLogin: false,
       };
     },
     mounted(){
       let textWrapper = document.querySelector('.ml1 .letters');
       textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-
       translate('.ml1 .letter');
       translate1(this.$refs.lineLine1);
       translate1(this.$refs.lineLine2);

@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import { db } from '../main.js'
-// import { collection } from 'firebase/firestore/lite';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
+import { db } from '../firebase.js'
+// import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore/lite';
 export default {
   name: "App",
   data() {
@@ -52,7 +52,7 @@ export default {
     });
   },
   methods: {
-    add: function add(data) {
+    add: function (data) {
       Date.prototype.toJSONLocal = function () {
         function addZ(n) {
           return (n < 10 ? "0" : "") + n;
@@ -84,7 +84,10 @@ export default {
       this.shop_data = "";
       this.count_data = "1";
     },
-    onDelete: function onDelete(id) {
+    onDelete: function (id) {
+      updateDoc(doc(db, 'shopCart', 'item'),{
+        all_goods: arrayRemove(this.items[id])
+      });
       this.items.splice(id, 1);
     },
   },
@@ -99,10 +102,9 @@ export default {
   color: #2c3e50;
 } */
 body {
-  margin-top: 60px;
   margin-bottom: 60px;
   font-family: "Poppins", sans-serif;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: #2c3e50;
 }
 .do{
@@ -119,7 +121,6 @@ h3.shop{
   min-height: 100%;
   border: 3px solid seagreen;
   padding: 30px;
-  padding-top: 10px;
   border-radius: 10px;
 }
 .dataIn {
@@ -201,7 +202,7 @@ h3.shop{
 .button {
   float: right;
   background-color: rgb(38, 171, 26); /* Green */
-  margin: 0px;
+  margin-top: 0px;
   border: none;
   color: white;
   padding: 10px 20px;

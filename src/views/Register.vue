@@ -1,5 +1,5 @@
 <template>
-    <form class = "login needs-validation" novalidate>
+    <form class="login needs-validation" novalidate action="#" @submit.prevent="submit">
         <div class="form-floating mb-3 in">
             <input class = "form-control" type = "email" placeholder="name@example.com" v-model="email" required/>
             <label for="floatingInput">Email address</label>
@@ -13,11 +13,11 @@
             <div class="invalid-feedback">Please enter correct password</div>
         </div>
         <br/>
-        <input type = "submit" class = "btn btn-outline-primary" value = "登入" @click="check(email, password)"/>
+        <input type="submit" class="btn btn-outline-primary" value="註冊" @click="check(email, password)"/>
     </form>
 </template>
 <script>
-import { register } from '../firebase.js';
+import { getAuthState, register } from '../firebase.js';
 export default {
     data() {
         return {
@@ -27,24 +27,27 @@ export default {
         };
     },
     methods:{
-        getData: function getData(email, password){
-
-            console.log(register(email, password));
-            this.$router.push('/Login');
-            // window.location.href = ""
-
-            // console.log(email, password);
+        getData: async function (email, password){
+            await register(email, password).then(() => {console.log(1)})
+            let authState = await getAuthState();
+            console.log(authState);
+            if(authState){
+                this.$router.push('/body');
+            }
+            else{
+                this.$router.push('/login');
+            }
         },
-        check: function check(email, password){
-            'use strict'
-
+        check: function (email, password){
+            // 'use strict'
+            let _getData = this.getData;
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             let forms = document.querySelectorAll('.needs-validation');
             let currect = 1;
             // Loop over them and prevent submission
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
+                form.addEventListener('submit', (event) => {
                     if (!form.checkValidity()) {
                         currect = 0;
                         event.preventDefault()
@@ -54,7 +57,7 @@ export default {
                     form.classList.add('was-validated')
                 }, false)
                 if(currect){
-                    this.getData(email, password);
+                    _getData(email, password);
                 }
                 })
         }
