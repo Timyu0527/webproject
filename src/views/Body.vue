@@ -2,34 +2,42 @@
   <div class="Container">
     <h1>
       購物車
+      <button @click="add({shop_data, goods_data, count_data, completed})" class="btn btn-success pos">新增</button>
+      <button @click="clear()" class="btn btn-danger pos">清空</button>
     </h1>
     <div class="dataIn">
-      <form action="#" @submit.prevent="add({shop_data, goods_data, count_data})">
-        <button type="submit" class = "button">新增</button>
-        <label class = "content"> <b>店家: </b><input class = "area" v-model="shop_data" /> </label>
-        <label class = "content"> <b>商品: </b><input class = "area" v-model="goods_data" /> </label>
-        <label class = "content"> <b>數量: </b><input class = "area" v-model="count_data" type = "number" min = "1"/> </label>
-      </form>
+      <label class="content"><b>店家: </b><input class="area" v-model="shop_data" /></label>
+      <label class="content"><b>商品: </b><input class="area" v-model="goods_data" /></label>
+      <label class="content"><b>數量: </b><input class="area" v-model="count_data" type="number" min="1"/></label>
     </div>
     <div :key="item.id" v-for="(item, index) in items">
       <div class="item">
-        <i @click="onDelete(index)" class="fas fa-times"></i>
-        <label class = "checkContainer">
-          <input type = "checkbox" v-model="item.completed" :id="item.id">
-          <span class="checkmark"></span>
-        </label>
-        <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
-          <h3 class = "shop">店家: {{ item.shop_data }}</h3>
-          <p class="">商品: {{ item.goods_data }}</p>
-          <p>數量: {{ item.count_data }}</p>
-        </label>
+          <i @click="onDelete(index)" class="fas fa-times"></i>
+          <label class="checkContainer">
+            <!-- <span v-if="item.completed==true"> -->
+              <!-- <input type = "checkbox" checked v-model="item.completed" :id="item.id" @click="change(index)"> -->
+            <!-- </span> -->
+            <!-- <span v-else> -->
+              <input type="checkbox" v-model="item.completed" :id="item.id" @click="change(index)">
+            <!-- </span> -->
+            <span class="checkmark"></span>
+          </label>
+          <!-- <transition name="show">
+            <p v-if="fade"> -->
+              <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
+                <h3 class="shop">店家: {{ item.shop_data }}</h3>
+                <p class="">商品: {{ item.goods_data }}</p>
+                <p>數量: {{ item.count_data }}</p>
+              </label>
+            <!-- </p>
+          </transition> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { db } from '../firebase.js'
+import { auth, db } from '../firebase.js'
 // import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore/lite';
 export default {
@@ -39,17 +47,31 @@ export default {
       items: [],
       shop_data: "",
       goods_data: "",
-      count_data: "1",
+      count_data: "",
+      total_price: 0,
+      completed: false,
     };
   },
   mounted(){
-    getDoc(doc(db, 'shopCart', 'item')).then((data) => {
+    getDoc(doc(db, 'shopCart', auth.currentUser.uid)).then((data) => {
       this.items = data.data().all_goods;
-      console.log(data.data().all_goods);
-      console.log(this.items);
+      // console.log(data.data().all_goods);
+      // console.log(this.items);
     });
   },
   methods: {
+    change: async function (id){
+      console.log(this.items);
+      let data = this.items[id]
+      console.log(data)
+      await updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+        all_goods: arrayRemove(data)
+      });
+      // console.log('adfasd');
+      await updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+        all_goods: arrayUnion(data)
+      });
+    },
     add: function (data) {
       Date.prototype.toJSONLocal = function () {
         function addZ(n) {
@@ -63,8 +85,8 @@ export default {
           addZ(this.getDate())
         );
       };
-      if(data.shop_data == "" && data.goods_data == ""){
-        alert("輸入請勿留白");
+      if(data.shop_data == "" || data.goods_data == "" || (!isFinite(data.count_data) && parseInt(data.count_data) > 0)){
+        alert("無效的輸入");
         return;
       }
       // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
@@ -74,20 +96,27 @@ export default {
         // goods: currentDateWithFormat,
         goods_data: data.goods_data,
         count_data: data.count_data,
+        completed: data.completed,
       });
-      updateDoc(doc(db, 'shopCart', 'item'),{
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayUnion(data)
       });
       this.goods_data = "";
       this.shop_data = "";
-      this.count_data = "1";
+      this.count_data = "";
     },
     onDelete: function (id) {
-      updateDoc(doc(db, 'shopCart', 'item'),{
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayRemove(this.items[id])
       });
       this.items.splice(id, 1);
     },
+    clear: function (){
+      this.items = [];
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+        all_goods: []
+      });
+    }
   },
 };
 </script>
@@ -197,9 +226,8 @@ h3.shop{
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-.button {
+/* .button {
   float: right;
-  background-color: rgb(38, 171, 26); /* Green */
   margin-top: 0px;
   border: none;
   color: white;
@@ -210,7 +238,7 @@ h3.shop{
   font-size: 16px;
   border-radius: 10px;
   cursor: pointer;
-}
+} */
 .content{
   margin: 5px;
 }
@@ -222,5 +250,9 @@ h3.shop{
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+.pos{
+  float: right;
+  margin:10px;
 }
 </style>
