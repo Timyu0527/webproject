@@ -62,30 +62,20 @@ export default{
   },
   updated(){
     onAuthStateChanged(auth, async (user) => {
-      // let username = await getUserName();
       if(user){
         this.isLogin = true;
         this.username = user.displayName;
-        // console.log(username);
-        // while(!this.username){
-          // this.username = auth.currentUser.displayName;
-          console.log('APP', auth.currentUser.displayName);
-        // }
+        console.log('APP', auth.currentUser.displayName);
       }
     });
 
   },
   mounted(){
     onAuthStateChanged(auth, async (user) => {
-      // let username = await getUserName();
       if(user){
         this.isLogin = true;
         this.username = user.displayName;
-        // console.log(username);
-        // while(!this.username){
-          // this.username = auth.currentUser.displayName;
-          console.log('APP', auth.currentUser.displayName);
-        // }
+        console.log('APP', auth.currentUser.displayName);
       }
     });
   },

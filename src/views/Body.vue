@@ -63,7 +63,9 @@ export default {
   },
   mounted(){
     getDoc(doc(db, 'shopCart', auth.currentUser.uid)).then((data) => {
-      this.items = data.data().all_goods;
+      if(data.data().all_goods){
+        this.items = data.data().all_goods;
+      }
       // console.log(data.data().all_goods);
       for(let value of this.items){
         this.total_price += (value.price_data * value.count_data);

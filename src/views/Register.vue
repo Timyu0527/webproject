@@ -41,7 +41,8 @@
   </div>
 </template>
 <script>
-import { getAuthState, register } from "../firebase.js";
+import { setDoc, doc } from '@firebase/firestore/lite';
+import { auth, db, getAuthState, register } from '../firebase.js';
 export default {
   data() {
     return {
@@ -59,6 +60,7 @@ export default {
       console.log(authState);
       if (authState) {
         this.$router.push("/body");
+        setDoc(doc(db, 'shopCart', auth.currentUser.uid), {all_goods:[]});
       } else {
         this.$router.push("/login");
       }
