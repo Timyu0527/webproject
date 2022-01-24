@@ -11,6 +11,9 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
+    meta: {
+      requiresAuth: true
+    },
     component: Home
   },
   {
@@ -22,7 +25,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Body.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Body.vue'),
   },
   {
     path: '/login',
@@ -41,19 +44,19 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     let state = await getAuthState();
-    if (!state) {
+    if(!state){
       next({
         name: 'Login'
-      })
-    } else {
-      next()
+      });
+    }else{
+      next();
     }
-  } else {
-    next()
+  }else{
+    next();
   }
 })
 

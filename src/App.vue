@@ -17,12 +17,12 @@
                 你的購物清單
               </a>
             </router-link>
+            <span v-if="isLogin" class="nav-link">{{ username }}</span>
             <router-link to="/" @click="userLogOut()">
               <a class="nav-link" href="#">
                 登出
               </a>
             </router-link>
-            <span v-if="isLogin" class="nav-link">{{ username }}</span>
           </span>
           <span class="d-inline-flex" v-else>
             <router-link to="/login"  @click="show = register">
@@ -47,6 +47,7 @@
       </keep-alive>
     </transition>
   </router-view>
+  <!-- <router-view /> -->
 </template>
 <script>
 import { onAuthStateChanged } from "@firebase/auth";
@@ -61,21 +62,21 @@ export default{
     };
   },
   updated(){
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, (user) => {
       if(user){
         this.isLogin = true;
-        this.username = user.displayName;
-        console.log('APP', auth.currentUser.displayName);
+        this.username = user.email.split('@')[0];
+        console.log('APP', auth.currentUser.email);
       }
     });
 
   },
   mounted(){
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, (user) => {
       if(user){
         this.isLogin = true;
-        this.username = user.displayName;
-        console.log('APP', auth.currentUser.displayName);
+        this.username = user.email.split('@')[0];
+        console.log('APP', auth.currentUser.email);
       }
     });
   },

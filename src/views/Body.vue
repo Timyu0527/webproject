@@ -57,6 +57,7 @@ export default {
       goods_data: "",
       count_data: "",
       price_data: "",
+      created_data: "",
       total_price: 0,
       completed: false,
     };
@@ -74,17 +75,18 @@ export default {
     });
   },
   methods: {
-    change: async function (id){
+    change: function (id){
       console.log(this.items);
       let data = this.items[id]
       console.log(data)
-      await updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayRemove(data)
+      }).then(() => {
+        updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+          all_goods: arrayUnion(data)
+        });
       });
       // console.log('adfasd');
-      await updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-        all_goods: arrayUnion(data)
-      });
     },
     add: function (data) {
       Date.prototype.toJSONLocal = function () {
