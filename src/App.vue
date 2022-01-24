@@ -11,13 +11,13 @@
               </a>
             </router-link>
           </span>
-          <span class="d-inline-flex"  v-if="isLogin">
-            <router-link to="/body">
+          <span class="d-inline-flex"  v-if="active">
+            <router-link to="/lists">
               <a class="nav-link" href="#">
-                你的購物清單
+                你的購物備忘錄
               </a>
             </router-link>
-            <span v-if="isLogin" class="nav-link">{{ username }}</span>
+            <span v-if="active" class="nav-link">{{ username }}</span>
             <router-link to="/" @click="userLogOut()">
               <a class="nav-link" href="#">
                 登出
@@ -40,14 +40,14 @@
       </div>
     </div>
   </nav>
-  <router-view v-slot="{ Component }">
+  <!-- <router-view v-slot="{ Component }">
     <transition name="fade" mode="out-in">
       <keep-alive>
         <component :is="Component"></component>
       </keep-alive>
     </transition>
-  </router-view>
-  <!-- <router-view /> -->
+  </router-view> -->
+  <router-view />
 </template>
 <script>
 import { onAuthStateChanged, signOut } from "@firebase/auth";
@@ -58,31 +58,31 @@ export default{
     return {
       username: "",
       show: 'login',
-      isLogin: false,
+      active: false,
     };
   },
   updated(){
     onAuthStateChanged(auth, (user) => {
       if(user){
-        this.isLogin = true;
+        this.active = true;
         this.username = user.email.split('@')[0];
-        console.log('APP', auth.currentUser.email);
+        // console.log('APP', auth.currentUser.email);
       }
     });
   },
   mounted(){
     onAuthStateChanged(auth, (user) => {
       if(user){
-        this.isLogin = true;
+        this.active = true;
         this.username = user.email.split('@')[0];
-        console.log('APP', auth.currentUser.email);
+        // console.log('APP', auth.currentUser.email);
       }
     });
   },
   methods: {
     userLogOut: function () {
       signOut(auth).then(() => {
-        this.isLogin = false;
+        this.active = false;
       });
     },
   },

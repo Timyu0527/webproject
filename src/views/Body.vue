@@ -3,42 +3,33 @@
     <h1>
       購物車
     </h1>
-    <div class="dataIn">
+    <div class="Form">
       <button @click="clear()" class="btn btn-danger pos">清空</button>
       <form action="#" @submit.prevent="add({shop_data, goods_data, count_data, price_data, completed})">
         <button type="submit" class="btn btn-success pos">新增</button>
-        <label class="content"><b>店家: </b><input class="area" v-model="shop_data" /></label>
-        <label class="content"><b>商品: </b><input class="area" v-model="goods_data" /></label>
-        <label class="content"><b>數量: </b><input class="area" v-model="count_data" type="number" min="1"/></label>
-        <label class="content"><b>價格: </b><input class="area" v-model="price_data" type="number" min="1"/></label>
+        <label class="field"><b>店家: </b><input class="content" v-model="shop_data" /></label>
+        <label class="field"><b>商品: </b><input class="content" v-model="goods_data" /></label>
+        <label class="field"><b>數量: </b><input class="content" v-model="count_data" type="number" min="1"/></label>
+        <label class="field"><b>價格: </b><input class="content" v-model="price_data" type="number" min="1"/></label>
       </form>
       <div class="price">
         <span></span>
         <span>合計: {{ total_price }} NTD</span>
       </div>
     </div>
-    <div :key="item.id" v-for="(item, index) in items">
+    <div :key="item.id" v-for="(item, index) in items.goods">
       <div class="item">
           <i @click="onDelete(index)" class="fas fa-times"></i>
           <label class="checkContainer">
-            <!-- <span v-if="item.completed==true"> -->
-              <!-- <input type = "checkbox" checked v-model="item.completed" :id="item.id" @click="change(index)"> -->
-            <!-- </span> -->
-            <!-- <span v-else> -->
               <input type="checkbox" v-model="item.completed" :id="item.id" @click="change(index)">
-            <!-- </span> -->
             <span class="checkmark"></span>
           </label>
-          <!-- <transition name="show">
-            <p v-if="fade"> -->
-              <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
-                <h3 class="shop">店家: {{ item.shop_data }}</h3>
-                <p class="">商品: {{ item.goods_data }}</p>
-                <p>數量: {{ item.count_data }}</p>
-                <p>價格: {{ item.price_data}}</p>
-              </label>
-            <!-- </p>
-          </transition> -->
+          <label :class="{'do': item.completed}" class="font-monospace" :for="item.id">
+            <h3 class="shop">店家: {{ item.shop_data }}</h3>
+            <p class="">商品: {{ item.goods_data }}</p>
+            <p>數量: {{ item.count_data }}</p>
+            <p>價格: {{ item.price_data}}</p>
+          </label>
       </div>
     </div>
   </div>
@@ -47,99 +38,90 @@
 <script>
 import { auth, db } from '../firebase.js'
 // import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore/lite';
+import { arrayRemove, doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore/lite';
 export default {
   name: "App",
+  props: ['listId'],
   data() {
     return {
       items: [],
+      lists: [],
       shop_data: "",
       goods_data: "",
       count_data: "",
       price_data: "",
-      created_data: "",
       total_price: 0,
       completed: false,
     };
   },
-  updated(){
+  mounted(){
+    // console.log(this.listId);
     getDoc(doc(db, 'shopCart', auth.currentUser.uid)).then((data) => {
-      if(data.data().all_goods){
-        this.items = data.data().all_goods;
+      if(data.data().lists[this.listId]){
+        this.items = data.data().lists[this.listId];
+        this.lists = data.data().lists;
       }
       // console.log(data.data().all_goods);
-      for(let value of this.items){
+      // console.log(this.items);
+      for(let value of this.items.goods){
         this.total_price += (value.price_data * value.count_data);
       }
-      // console.log(this.items);
     });
   },
   methods: {
     change: function (id){
-      console.log(this.items);
-      let data = this.items[id]
-      console.log(data)
+      // console.log(this.items.goods);
+      this.lists[this.listId].goods = this.items.goods;
+      let data = this.lists[this.listId]
+      // console.log('data =>', data);
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-        all_goods: arrayRemove(data)
+        lists: arrayRemove(data)
       }).then(() => {
         updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-          all_goods: arrayUnion(data)
+          lists: arrayUnion(this.lists[id])
         });
       });
       // console.log('adfasd');
     },
     add: function (data) {
-      Date.prototype.toJSONLocal = function () {
-        function addZ(n) {
-          return (n < 10 ? "0" : "") + n;
-        }
-        return (
-          this.getFullYear() +
-          "-" +
-          addZ(this.getMonth() + 1) +
-          "-" +
-          addZ(this.getDate())
-        );
-      };
       if(data.shop_data == "" ||
          data.goods_data == "" ||
          (!isFinite(data.count_data) && parseInt(data.count_data) > 0)){
         alert("無效的輸入");
         return;
       }
-      // let currentDateWithFormat = new Date().toJSONLocal(8).slice(0,10).replace(/-/g,'/');
-      this.items.unshift({
+      this.items.goods.unshift({
         id: Date.now(),
         shop_data: data.shop_data,
-        // goods: currentDateWithFormat,
         goods_data: data.goods_data,
         count_data: data.count_data,
         price_data: data.price_data,
         completed: data.completed,
+      });
+      this.lists[this.listId] = this.items;
+      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+        lists: this.lists
       }).then(() => {
-        updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-          all_goods: arrayUnion(data)
-        }).then(() => {
-          this.goods_data = "";
-          this.shop_data = "";
-          this.count_data = "";
-          this.price_data = "";
-          this.total_price += data.price_data * data.count_data;
-        });
+        this.goods_data = "";
+        this.shop_data = "";
+        this.count_data = "";
+        this.price_data = "";
+        this.total_price += data.price_data * data.count_data;
       });
     },
     onDelete: function (id) {
-      this.total_price -= parseInt(this.items[id].price_data * this.items[id].count_data);
+      this.total_price -= parseInt(this.items.goods[id].price_data * this.items.goods[id].count_data);
+      this.items.goods.splice(id, 1);
+      this.lists[this.listId] = this.items;
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-        all_goods: arrayRemove(this.items[id])
-      }).then(() => {
-        this.items.splice(id, 1);
+        lists: this.lists
       });
     },
     clear: function (){
-      this.items = [];
+      this.items.goods = [];
+      this.lists[this.listId] = this.items;
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-        all_goods: []
+        lists: this.lists
       }).then(() => {
         this.total_price = 0;
       });
@@ -149,16 +131,9 @@ export default {
 </script>
 
 <style scoped>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-} */
 body {
   margin-bottom: 60px;
   font-family: "Poppins", sans-serif;
-  /* font-weight: bold; */
   color: #2c3e50;
 }
 .do{
@@ -177,17 +152,15 @@ h3.shop{
   padding: 30px;
   border-radius: 10px;
 }
-.dataIn {
+.Form{
   display: block;
   margin: 0px 0px 20px 0px;
-  /* padding: 100px; */
 }
 .fas {
   color: red;
   float: right;
 }
 .item {
-  /* display: block; */
   background: #f4f4f4;
   margin: 5px;
   padding: 10px 10px 1px 10px;
@@ -211,8 +184,6 @@ h3.shop{
 }
 .checkContainer input{
   position: absolute;
-  /* left: 0px;
-  top: 0px; */
   opacity: 0;
   cursor: pointer;
   height: 10;
@@ -253,23 +224,10 @@ h3.shop{
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-/* .button {
-  float: right;
-  margin-top: 0px;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 10px;
-  cursor: pointer;
-} */
-.content{
+.field{
   margin: 5px;
 }
-.area{
+.content{
   /* width: 100%; */
   padding: 6px 10px;
   margin: 8px 0;
@@ -283,8 +241,6 @@ h3.shop{
   margin:10px;
 }
 .price{
-  /* align-self: right; */
-  /* text-align: right; */
   display: flex;
   justify-content: space-between;
   height: 30px;

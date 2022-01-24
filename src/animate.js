@@ -1,6 +1,6 @@
 import anime from "animejs";
 
-export function translate(element) { //letter
+export function letterTranslate(element) { //letter
   anime({
     targets: element,
     scale: [0.3,1],
@@ -11,7 +11,7 @@ export function translate(element) { //letter
     delay: (el, i) => 100 * (i+1)
   });
 }
-export function translate1(element) { //line
+export function lineTranslate(element) { //line
   anime({
     targets: element,
     scaleX: [0, 1],
@@ -22,7 +22,7 @@ export function translate1(element) { //line
     delay: (el, i, l) => 80 * (l - i)
   });
 }
-export function translate2(element) {
+export function fadeOut(element) {
   anime({
     targets: element,
     opacity: [1, 0],

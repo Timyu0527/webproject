@@ -49,16 +49,16 @@ export default {
       email: "",
       password: "",
       show: true,
-      isLogin: false,
+      active: false,
     };
   },
   methods: {
-    getData: function (email, password) {
+    userLogin: function (email, password) {
       login(email, password).then(() => {
         console.log('success');
         if (getAuthState()) {
-          this.$router.push("/body");
-          this.isLogin = true;
+          this.$router.push("/lists");
+          this.active = true;
           // auth.currentUser.displayName = this.email.split("@")[0];
         }
       }).catch((err) => {
@@ -68,8 +68,7 @@ export default {
     },
     check: function (email, password){
 
-      let _getData = this.getData;
-      // console.log(email, password);
+      let _userLogin = this.userLogin;
       // Fetch all the forms we want to apply custom Bootstrap validation styles to
       let forms = document.querySelectorAll(".needs-validation");
       let currect = 1;
@@ -88,7 +87,7 @@ export default {
           false
         );
         if (currect) {
-          _getData(email, password);
+          _userLogin(email, password);
         }
       });
     },
@@ -111,22 +110,6 @@ export default {
 .center {
   text-align: center;
 }
-/* .login{
-        text-align: center;
-    } */
-/* .submit{
-        background-color: rgb(38, 171, 26);
-        margin: 10px;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        border-radius: 10px;
-        cursor: pointer;
-    } */
 .btn-outline-primary {
   margin: 10px;
   border-color: green;

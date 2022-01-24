@@ -3,7 +3,7 @@
     <h1 class="ml1" ref="ml1">
       <span class="text-wrapper" ref="textWrapper">
         <span class="line line1" ref="lineLine1"></span>
-        <span class="letters" ref="letters">購物車網站</span>
+        <span class="letters" ref="letters">購物備忘錄</span>
         <span class="line line2" ref="lineLine2"></span>
       </span>
     </h1>
@@ -11,30 +11,30 @@
   </div>
 </template>
 <script>
-  import { translate, translate1, translate2 } from "../animate";
+  import { letterTranslate, lineTranslate, fadeOut } from "../animate";
 
   export default {
     data() {
       return {
         show: true,
-        isLogin: false,
+        active: false,
       };
     },
     updated(){
-      this.letterTranslate();
+      this.titleTranslate();
     },
     mounted(){
-      this.letterTranslate();
+      this.titleTranslate();
     },
     methods:{
-      letterTranslate: function(){      
+      titleTranslate: function(){      
         let textWrapper = document.querySelector('.ml1 .letters');
         textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-        translate('.ml1 .letter');
-        translate1(this.$refs.lineLine1);
-        translate1(this.$refs.lineLine2);
-        translate2(this.$refs.lineLine1);
-        translate2(this.$refs.lineLine2);
+        letterTranslate('.ml1 .letter');
+        lineTranslate(this.$refs.lineLine1);
+        lineTranslate(this.$refs.lineLine2);
+        fadeOut(this.$refs.lineLine1);
+        fadeOut(this.$refs.lineLine2);
       }
     }
   };

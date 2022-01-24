@@ -17,15 +17,21 @@ const routes = [
     component: Home
   },
   {
-    path: '/body',
+    path: '/lists',
+    name: 'Lists',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/Lists.vue'),
+  },
+  {
+    path: '/lists/:listId/body',
     name: 'Body',
     meta: {
       requiresAuth: true
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Body.vue'),
+    props: true,
+    component: () => import('@/views/Body.vue'),
   },
   {
     path: '/login',

@@ -52,15 +52,15 @@ export default {
     };
   },
   methods: {
-    getData: async function (email, password) {
+    userRegister: async function (email, password) {
       await register(email, password).then(async () => {
         console.log(1);
         let authState = await getAuthState();
         console.log(authState);
         if (authState) {
-          this.$router.push("/body");
+          this.$router.push("/lists");
           setDoc(doc(db, 'shopCart', auth.currentUser.uid), {
-            all_goods:[]
+            lists:[]
           });
         } else {
           this.$router.push("/login");
@@ -71,7 +71,7 @@ export default {
     },
     check: function (email, password) {
       // 'use strict'
-      let _getData = this.getData;
+      let _userRegister = this.userRegister;
       // Fetch all the forms we want to apply custom Bootstrap validation styles to
       let forms = document.querySelectorAll(".needs-validation");
       let currect = 1;
@@ -91,7 +91,7 @@ export default {
           false
         );
         if (currect) {
-          _getData(email, password);
+          _userRegister(email, password);
         }
       });
     },
