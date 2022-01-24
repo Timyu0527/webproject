@@ -31,12 +31,12 @@
         <div class="invalid-feedback">Please enter correct password</div>
       </div>
       <br />
-      <input
-        type="submit"
+      <button
         class="btn btn-secondary"
-        value="登入"
         @click="check(email, password)"
-      />
+      >
+      登入
+      </button>
     </form>
   </div>
 </template>
@@ -54,13 +54,17 @@ export default {
   },
   methods: {
     getData: function (email, password) {
-      login(email, password);
+      login(email, password).then(() => {
+        console.log('success');
+        if (getAuthState()) {
+          this.$router.push("/body");
+          this.isLogin = true;
+          // auth.currentUser.displayName = this.email.split("@")[0];
+        }
+      }).catch((err) => {
+        alert(err.code.split('auth/')[1]);
+      });
       // login(email, password);
-      if (getAuthState()) {
-        this.$router.push("/body");
-        this.isLogin = true;
-        // auth.currentUser.displayName = this.email.split("@")[0];
-      }
     },
     check: function (email, password){
 

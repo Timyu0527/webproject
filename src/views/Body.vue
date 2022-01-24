@@ -62,7 +62,7 @@ export default {
       completed: false,
     };
   },
-  mounted(){
+  updated(){
     getDoc(doc(db, 'shopCart', auth.currentUser.uid)).then((data) => {
       if(data.data().all_goods){
         this.items = data.data().all_goods;
@@ -103,8 +103,7 @@ export default {
       };
       if(data.shop_data == "" ||
          data.goods_data == "" ||
-         (!isFinite(data.count_data) && parseInt(data.count_data) > 0) ||
-         (!isFinite(data.price_data) && parseInt(data.price_data) > 0)){
+         (!isFinite(data.count_data) && parseInt(data.count_data) > 0)){
         alert("無效的輸入");
         return;
       }
@@ -117,29 +116,33 @@ export default {
         count_data: data.count_data,
         price_data: data.price_data,
         completed: data.completed,
+      }).then(() => {
+        updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
+          all_goods: arrayUnion(data)
+        }).then(() => {
+          this.goods_data = "";
+          this.shop_data = "";
+          this.count_data = "";
+          this.price_data = "";
+          this.total_price += data.price_data * data.count_data;
+        });
       });
-      updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
-        all_goods: arrayUnion(data)
-      });
-      this.goods_data = "";
-      this.shop_data = "";
-      this.count_data = "";
-      this.price_data = "";
-      this.total_price += data.price_data * data.count_data;
     },
     onDelete: function (id) {
       this.total_price -= parseInt(this.items[id].price_data * this.items[id].count_data);
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: arrayRemove(this.items[id])
+      }).then(() => {
+        this.items.splice(id, 1);
       });
-      this.items.splice(id, 1);
     },
     clear: function (){
       this.items = [];
       updateDoc(doc(db, 'shopCart', auth.currentUser.uid),{
         all_goods: []
+      }).then(() => {
+        this.total_price = 0;
       });
-      this.total_price = 0;
     }
   },
 };

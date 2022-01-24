@@ -50,8 +50,8 @@
   <!-- <router-view /> -->
 </template>
 <script>
-import { onAuthStateChanged } from "@firebase/auth";
-import { logout, auth } from "./firebase";
+import { onAuthStateChanged, signOut } from "@firebase/auth";
+import { auth } from "./firebase";
 
 export default{
   data(){
@@ -69,7 +69,6 @@ export default{
         console.log('APP', auth.currentUser.email);
       }
     });
-
   },
   mounted(){
     onAuthStateChanged(auth, (user) => {
@@ -82,8 +81,9 @@ export default{
   },
   methods: {
     userLogOut: function () {
-      logout();
-      this.isLogin = false;
+      signOut(auth).then(() => {
+        this.isLogin = false;
+      });
     },
   },
 }

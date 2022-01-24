@@ -48,6 +48,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     let state = await getAuthState();
+    // console.log(auth.currentUser);
     if(!state){
       next({
         name: 'Login'

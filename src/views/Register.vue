@@ -53,17 +53,21 @@ export default {
   },
   methods: {
     getData: async function (email, password) {
-      await register(email, password).then(() => {
+      await register(email, password).then(async () => {
         console.log(1);
+        let authState = await getAuthState();
+        console.log(authState);
+        if (authState) {
+          this.$router.push("/body");
+          setDoc(doc(db, 'shopCart', auth.currentUser.uid), {
+            all_goods:[]
+          });
+        } else {
+          this.$router.push("/login");
+        }
+      }).catch((err) => {
+        alert(err.code.split('auth/')[1]);
       });
-      let authState = await getAuthState();
-      console.log(authState);
-      if (authState) {
-        this.$router.push("/body");
-        setDoc(doc(db, 'shopCart', auth.currentUser.uid), {all_goods:[]});
-      } else {
-        this.$router.push("/login");
-      }
     },
     check: function (email, password) {
       // 'use strict'

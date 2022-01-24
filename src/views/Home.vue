@@ -21,10 +21,10 @@
       };
     },
     updated(){
-      this.letterTranslate()
+      this.letterTranslate();
     },
     mounted(){
-      this.letterTranslate()
+      this.letterTranslate();
     },
     methods:{
       letterTranslate: function(){      
